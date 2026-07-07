@@ -1,8 +1,10 @@
 # Relatório — Plataforma de AI Agents
 
-## Vídeo Demonstração
+## Vídeo Explicando
 
-> **[PLACEHOLDER]** Inserir URL do vídeo de demonstração da plataforma no YouTube.
+Esse vídeo tem a finalidade de mostrar algumas partes da aplicação rodando em containers e explicar melhor as decisões e pensamentos por trás do desenvolvimento
+
+> [🎥 Assistir demonstração no YouTube](https://youtu.be/fmN8JfryXsQ)
 
 ---
 
@@ -60,4 +62,4 @@ A plataforma roda hoje com `docker-compose` isolado por serviço. Kubernetes é 
 
 As instruções de pré-requisitos, configuração do ambiente e como rodar cada serviço localmente estão em um arquivo separado.
 
-> Consulte o arquivo **`SETUP.md`** para o guia completo de instalação e execução local.
+> Consulte o arquivo **`README.md`** para o guia completo de instalação e execução local.
