@@ -1,0 +1,49 @@
+spring:
+  application:
+    name: agent-service
+  ai:
+    openai:
+      base-url: http://localhost:4000/v1
+      api-key: dummy
+      chat:
+        options:
+          model: qwen2.5
+tool:
+  base:
+    url: ${TOOL_BASE_URL:http://localhost:8081/tools}
+
+memory:
+  base:
+    url: ${MEMORY_BASE_URL:http://localhost:8083}
+
+retrieval:
+  base:
+    url: ${RETRIEVAL_BASE_URL:http://localhost:8000}
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: full
+      toolService:
+        connectTimeout: 3000
+        readTimeout: 3000
+      memoryService:
+        connectTimeout: 3000
+        readTimeout: 5000
+      retrievalService:
+        connectTimeout: 3000
+        readTimeout: 10000
+
+# Eureka — service discovery
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port:8080}
