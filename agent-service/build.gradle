@@ -38,6 +38,12 @@ dependencies {
 
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 	implementation("org.projectlombok:lombok:1.18.46")
+
+	// Observability — Micrometer + OpenTelemetry + Jaeger (OTLP)
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'io.micrometer:micrometer-tracing-bridge-otel'
+	implementation 'io.opentelemetry:opentelemetry-exporter-otlp'
+	runtimeOnly   'io.opentelemetry:opentelemetry-sdk-extension-autoconfigure'
 }
 
 dependencyManagement {
