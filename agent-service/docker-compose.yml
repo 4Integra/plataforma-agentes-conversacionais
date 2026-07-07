@@ -1,0 +1,37 @@
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:1.58
+    container_name: jaeger
+    restart: unless-stopped
+    ports:
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+      - "16686:16686" # Jaeger UI
+      - "14250:14250" # gRPC collector (legacy)
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    networks:
+      - observability
+
+  agent-service:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: agent-service
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://jaeger:4317
+      - EUREKA_URL=http://eureka-server:8761/eureka/
+      - TOOL_BASE_URL=http://tool-service:8081/tools
+      - MEMORY_BASE_URL=http://memory-service:8083
+      - RETRIEVAL_BASE_URL=http://retrieval-service:8000
+    depends_on:
+      - jaeger
+    networks:
+      - observability
+
+networks:
+  observability:
+    driver: bridge
