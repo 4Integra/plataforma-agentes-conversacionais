@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: name-server
+
+server:
+  port: ${SERVER_PORT:8761}
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    # This is the server itself — it should not register with or fetch from itself
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+  server:
+    # Wait time before evicting instances that stop sending heartbeats (ms)
+    eviction-interval-timer-in-ms: 10000
+    # Disable self-preservation in dev so stale instances are removed quickly
+    enable-self-preservation: false
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.netflix.eureka: INFO
+    com.netflix.discovery: INFO
+    com.integra.name_server: DEBUG
