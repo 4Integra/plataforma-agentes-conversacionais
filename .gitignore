@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+
+# Test and coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local environment
+.env
+.env.*
+
+# IDE/editor
+.idea/
+.vscode/
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+tmp/
+temp/
+
+# Local model/cache artifacts
+.cache/
+models/
+
+# Docker override files
+docker-compose.override.yaml
+docker-compose.override.yml
