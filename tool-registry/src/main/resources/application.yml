@@ -1,0 +1,7 @@
+spring:
+  data:
+    mongodb: tool-registry
+  application:
+    name: Tool-registry
+server:
+  port: 8081
