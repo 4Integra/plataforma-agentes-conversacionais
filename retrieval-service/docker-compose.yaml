@@ -1,0 +1,49 @@
+services:
+  retrieval-service:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      COLLECTION_NAME: documents
+      MODEL_NAME: BAAI/bge-small-en-v1.5
+      ALLOWED_MODEL_NAMES: BAAI/bge-small-en-v1.5
+      QDRANT_HOST: qdrant
+      QDRANT_PORT: 6333
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: guest
+      RABBITMQ_PASSWORD: guest
+      RABBITMQ_VIRTUAL_HOST: /
+      DOCUMENT_INGESTION_QUEUE: retrieval.document-ingestion
+      INGESTION_PREFETCH_COUNT: 1
+      INGESTION_CONSUMER_ENABLED: true
+      INGESTION_RETRY_DELAY_SECONDS: 5
+      MAX_DOCUMENT_CHARS: 50000
+      MAX_QUERY_CHARS: 2000
+      MAX_METADATA_BYTES: 8192
+      MAX_REQUEST_BYTES: 1000000
+      MAX_SEARCH_LIMIT: 20
+      MAX_USER_ID_CHARS: 128
+    depends_on:
+      - qdrant
+      - rabbitmq
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+volumes:
+  qdrant_data:
+  rabbitmq_data:
