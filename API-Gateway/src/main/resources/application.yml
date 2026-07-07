@@ -1,0 +1,74 @@
+spring:
+  application:
+    name: API-Gateway
+
+  cloud:
+    gateway:
+      mvc:
+        # Global filters applied to every route
+        default-filters:
+          - PreserveHostHeader
+          - RemoveRequestHeader=X-Internal
+
+        # CORS — gateway-level, applies to every route
+        globalcors:
+          cors-configurations:
+            '[/**]':
+              allowedOriginPatterns:
+                - "*"
+              allowedMethods:
+                - GET
+                - POST
+                - PUT
+                - PATCH
+                - DELETE
+                - OPTIONS
+              allowedHeaders:
+                - "*"
+              exposedHeaders:
+                - X-Request-Id
+                - X-RateLimit-Remaining
+              allowCredentials: false
+              maxAge: 3600
+
+# Downstream service base URLs (override via env vars in each environment)
+gateway:
+  services:
+    agent:     ${AGENT_SERVICE_URL:http://localhost:8080}
+    tools:     ${TOOL_REGISTRY_URL:http://localhost:8081}
+    memory:    ${MEMORY_SERVICE_URL:http://localhost:8083}
+    retrieval: ${RETRIEVAL_SERVICE_URL:http://localhost:8000}
+    llm:       ${LLM_GATEWAY_URL:http://localhost:4000}
+
+server:
+  port: ${SERVER_PORT:9000}
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,circuitbreakers,circuitbreakerevents
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+logging:
+  level:
+    org.springframework.cloud.gateway: INFO
+    com.integra.gateway: DEBUG
+
+# Eureka — service discovery
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
