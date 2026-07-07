@@ -8,39 +8,7 @@
 
 ## Diagrama de Arquitetura
 
-> **[PLACEHOLDER — gerar separado]** Diagrama documentando os microsserviços, suas responsabilidades e os protocolos de comunicação utilizados.
-
-Visão geral enquanto o diagrama não é inserido:
-
-```
-                        Cliente / UI
-                             │
-                         HTTP REST
-                             │
-                    ┌────────▼────────┐
-                    │   API-Gateway   │  Java 17 · Spring Cloud Gateway MVC
-                    │   porta :9000   │  Rate limiting · Circuit breaker
-                    └──┬──┬──┬──┬──┬─┘
-          ┌────────────┘  │  │  │  └──────────────┐
-          ▼               ▼  │  ▼                 ▼
-  ┌──────────────┐  ┌──────────────┐   ┌──────────────────┐   ┌───────────────┐
-  │ agent-service│  │tool-registry │   │  memory-service  │   │retrieval-serv.│
-  │  Java 17     │  │  Kotlin      │   │  Java 21         │   │  Python       │
-  │  Spring AI   │  │  Spring Boot │   │  Spring Boot     │   │  FastAPI      │
-  │  port :8080  │  │  MongoDB     │   │  PostgreSQL+Redis │   │  Qdrant+MQ    │
-  └──────┬───────┘  │  port :8081  │   │  port :8083      │   │  port :8000   │
-         │          └──────────────┘   └──────────────────┘   └───────────────┘
-         │ HTTP REST (OpenAI-compat.)
-  ┌──────▼───────────┐
-  │   llm-gateway    │  LiteLLM · Ollama · PostgreSQL
-  │   porta :4000    │
-  └──────────────────┘
-
-  ┌──────────────────┐
-  │   name-server    │  Java 17 · Spring Cloud Netflix Eureka
-  │  (service disc.) │  porta :8761
-  └──────────────────┘
-```
+![Diagrama de Arquitetura](./Diagrama-de-arquitetura.png)
 
 **Protocolos de comunicação:**
 - **HTTP REST** — canal principal entre todos os serviços
